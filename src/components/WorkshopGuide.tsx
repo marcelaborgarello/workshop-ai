@@ -157,7 +157,6 @@ export default function WorkshopGuide() {
             placeholder="[ROL] Sos un/a...\n[CONTEXTO] Trabajo en...\n[TAREA] Necesito que...\n[FORMATO] Respondé en...\n[RESTRICCIONES] No..."
           />
           <EjercicioIA ejercicioId="b2" />
-          <EditableField id="b2_diferencia" label="¿Qué diferencia notaste en el resultado?" placeholder="Anotá acá lo que observaste..." />
         </div>
 
         <hr />

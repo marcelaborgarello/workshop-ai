@@ -31,7 +31,7 @@ Si el usuario menciona temas personales, de salud, sentimientos o cualquier cosa
 
 const PROMPTS_BY_ID: Record<string, string> = {
   b1: "El participante reflexionó sobre mitos de la IA. Evaluá si su reflexión es correcta y completá con información precisa.",
-  b2: "El participante reescribió un prompt con las 5 partes (rol, contexto, tarea, formato, restricciones). Evaluá qué partes incluyó, cuáles faltan, y luego ejecutá el prompt mejorado.",
+  b2: "El participante reescribió un prompt con las 5 partes (rol, contexto, tarea, formato, restricciones). Evaluá qué partes incluyó, cuáles faltan, y luego ejecutá el prompt mejorado. Al final de tu respuesta, preguntale al participante: '¿Qué diferencias notaste en el resultado respecto al prompt original?'",
   b3: "El participante identificó tareas para automatizar con IA. Evaluá si son buenas candidatas y ejecutá el prompt que armó.",
   b4: "El participante anotó observaciones sobre código generado por IA. Evaluá sus notas y mostrá un ejemplo de código relacionado.",
   adv: "El participante está en el bloque avanzado (MCP, agentes, guardrails). Respondé con profundidad técnica, con ejemplos de código TypeScript cuando corresponda.",
