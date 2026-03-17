@@ -3,10 +3,12 @@ import Checklist from "./Checklist";
 import FeedbackForm from "./FeedbackForm";
 import AdvancedToggle from "./AdvancedToggle";
 import EjercicioIA from "./EjercicioIA";
+import TermsModal from "./TermsModal";
 
 export default function WorkshopGuide() {
   return (
     <div className="workshop-container">
+      <TermsModal />
       {/* ── HEADER ─────────────────────────────── */}
       <div className="header">
         <div className="header-inner">
