@@ -1,17 +1,23 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, Content } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
 
-// Estructura de la solicitud
+// Estructura de la solicitud para soportar chat multiturno
+interface ChatMessage {
+  role: "user" | "assistant";
+  content: string;
+}
+
 interface ExerciseRequest {
   ejercicioId: string;
-  contenido: string;
+  messages: ChatMessage[];
 }
 
 // Configuración de Gemini (SDK Nuevo @google/genai)
 const client = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY || "" });
 
 const SYSTEM_PROMPT_BASE = `Sos un asistente del Workshop de IA de Ginialtech. Respondés en español de Argentina, de forma concisa y didáctica. 
-Para cada ejercicio tenés dos roles: primero evaluás lo que escribió el participante (qué está bien, qué falta, cómo mejorar), luego respondés como si fueras la IA ejecutando la tarea.`;
+Para cada ejercicio tenés dos roles: primero evaluás lo que escribió el participante (qué está bien, qué falta, cómo mejorar), luego respondés como si fueras la IA ejecutando la tarea.
+Si el usuario te hace preguntas de seguimiento, respondé manteniendo el contexto del ejercicio pero permitiendo una conversación fluida.`;
 
 const PROMPTS_BY_ID: Record<string, string> = {
   b1: "El participante reflexionó sobre mitos de la IA. Evaluá si su reflexión es correcta y completá con información precisa.",
@@ -23,43 +29,62 @@ const PROMPTS_BY_ID: Record<string, string> = {
 
 export async function POST(req: NextRequest) {
   try {
-    const { ejercicioId, contenido }: ExerciseRequest = await req.json();
+    const { ejercicioId, messages }: ExerciseRequest = await req.json();
 
-    if (!ejercicioId || !contenido) {
+    if (!ejercicioId || !messages || !Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json(
-        { error: "Faltan datos obligatorios (ejercicioId o contenido)" },
+        { error: "Faltan datos obligatorios (ejercicioId o historial de mensajes)" },
         { status: 400 }
       );
     }
 
     const specificPrompt = PROMPTS_BY_ID[ejercicioId] || "Respondé de forma general sobre el workshop.";
     
-    const fullPrompt = `
-      ${SYSTEM_PROMPT_BASE}
+    // Mapeamos los mensajes al formato de Gemini
+    // El primer mensaje debe contener el contexto del sistema y del ejercicio
+    const geminiMessages: Content[] = messages.map((m, index) => {
+      let text = m.content;
       
-      CONTEXTO DEL EJERCICIO:
-      ${specificPrompt}
-      
-      CONTENIDO DEL PARTICIPANTE:
-      "${contenido}"
-    `;
+      // Si es el primer mensaje del usuario, le inyectamos los prompts de sistema/ejercicio
+      if (index === 0 && m.role === "user") {
+        text = `
+          ${SYSTEM_PROMPT_BASE}
+          
+          CONTEXTO DEL EJERCICIO:
+          ${specificPrompt}
+          
+          CONTENIDO DEL PARTICIPANTE:
+          "${m.content}"
+        `;
+      }
+
+      return {
+        role: m.role === "assistant" ? "model" : "user",
+        parts: [{ text }],
+      };
+    });
 
     const result = await client.models.generateContentStream({
       model: "gemini-3-flash-preview",
-      contents: [{ role: "user", parts: [{ text: fullPrompt }] }],
+      contents: geminiMessages,
     });
 
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
       async start(controller) {
-        // En @google/genai, generateContentStream devuelve directamente el generador
-        for await (const chunk of result) {
-          const text = chunk.text;
-          if (text) {
-            controller.enqueue(encoder.encode(String(text)));
+        try {
+          for await (const chunk of result) {
+            const text = chunk.text;
+            if (text) {
+              controller.enqueue(encoder.encode(String(text)));
+            }
           }
+        } catch (err) {
+          console.error("Stream Error:", err);
+          controller.error(err);
+        } finally {
+          controller.close();
         }
-        controller.close();
       },
     });
 
