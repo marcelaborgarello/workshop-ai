@@ -15,9 +15,11 @@ interface ExerciseRequest {
 // Configuración de Gemini (SDK Nuevo @google/genai)
 const client = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY || "" });
 
-const SYSTEM_PROMPT_BASE = `Sos un asistente del Workshop de IA de Ginialtech. Respondés en español de Argentina, de forma concisa y didáctica. 
+const SYSTEM_PROMPT_BASE = `Sos un asistente técnico del Workshop de IA de Ginialtech. Respondés en español de Argentina, de forma concisa y didáctica.
 Para cada ejercicio tenés dos roles: primero evaluás lo que escribió el participante (qué está bien, qué falta, cómo mejorar), luego respondés como si fueras la IA ejecutando la tarea.
-Si el usuario te hace preguntas de seguimiento, respondé manteniendo el contexto del ejercicio pero permitiendo una conversación fluida.`;
+Si el usuario te hace preguntas de seguimiento, respondé manteniendo el contexto del ejercicio pero permitiendo una conversación fluida.
+Si el usuario escribe algo que no tiene relación con el workshop o con IA, redirigilo al ejercicio en curso.
+MUY IMPORTANTE: No simulés empatía ni emociones. Sos una herramienta didáctica. Si alguien menciona algo personal o emocional, recordale que sos una IA sin sentimientos y redirigilo al ejercicio. Esto es intencional — el workshop enseña exactamente eso.`;
 
 const PROMPTS_BY_ID: Record<string, string> = {
   b1: "El participante reflexionó sobre mitos de la IA. Evaluá si su reflexión es correcta y completá con información precisa.",
@@ -34,8 +36,8 @@ interface GeminiModelsClient {
 
 // Función auxiliar para reintentos con backoff exponencial (Standard Senior)
 async function generateContentWithRetry(
-  client: GoogleGenAI, 
-  params: { model: string; contents: Content[] }, 
+  client: GoogleGenAI,
+  params: { model: string; contents: Content[] },
   maxRetries = 3
 ) {
   let lastError: Error | unknown;
@@ -47,10 +49,10 @@ async function generateContentWithRetry(
     } catch (err: unknown) {
       lastError = err;
       const errorMessage = err instanceof Error ? err.message : String(err);
-      const isOverloaded = errorMessage.includes("503") || 
-                           errorMessage.includes("overloaded") || 
-                           errorMessage.includes("Service Unavailable");
-      
+      const isOverloaded = errorMessage.includes("503") ||
+        errorMessage.includes("overloaded") ||
+        errorMessage.includes("Service Unavailable");
+
       if (isOverloaded && i < maxRetries - 1) {
         const delay = Math.pow(2, i) * 1000;
         console.log(`[Gemini] Servicio sobrecargado. Reintentando en ${delay}ms... (Intento ${i + 1}/${maxRetries})`);
@@ -75,7 +77,7 @@ export async function POST(req: NextRequest) {
     }
 
     const specificPrompt = PROMPTS_BY_ID[ejercicioId] || "Respondé de forma general sobre el workshop.";
-    
+
     const geminiMessages: Content[] = messages.map((m, index) => {
       let text = m.content;
       if (index === 0 && m.role === "user") {
@@ -135,9 +137,9 @@ export async function POST(req: NextRequest) {
     const errorMessage = error instanceof Error ? error.message : "";
     const status = errorMessage.includes("503") ? 503 : 500;
     return NextResponse.json(
-      { 
+      {
         error: "Error al conectar con Gemini. El servicio puede estar sobrecargado.",
-        details: errorMessage 
+        details: errorMessage
       },
       { status }
     );
