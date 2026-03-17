@@ -38,13 +38,19 @@ export default function Footer() {
   return (
     <footer className="w-full bg-[#132236] border-t border-[#7B5EA7]/20 py-8 mt-12">
       <div className="max-w-4xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-4 sm:gap-8">
           <button 
             onClick={() => setIsModalOpen(true)}
             className="flex items-center gap-2 px-4 py-2 bg-transparent hover:bg-white/5 text-[#7FA8A0] hover:text-teal border border-[#7FA8A0]/30 hover:border-teal rounded-lg transition-all duration-300 text-sm font-medium"
           >
             <Mail size={16} />
             Contacto
+          </button>
+          <button 
+            onClick={() => window.dispatchEvent(new Event("open-terms"))}
+            className="text-[#7FA8A0] hover:text-white text-xs font-medium underline underline-offset-4 decoration-[#7FA8A0]/30 hover:decoration-white transition-all duration-300"
+          >
+            Términos y Condiciones
           </button>
         </div>
 

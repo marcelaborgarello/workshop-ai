@@ -12,6 +12,14 @@ export default function TermsModal() {
       setIsOpen(true);
       document.body.style.overflow = "hidden";
     }
+
+    const handleOpenManual = () => {
+      setIsOpen(true);
+      document.body.style.overflow = "hidden";
+    };
+
+    window.addEventListener("open-terms", handleOpenManual);
+    return () => window.removeEventListener("open-terms", handleOpenManual);
   }, []);
 
   const handleAccept = () => {
