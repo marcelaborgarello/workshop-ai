@@ -77,10 +77,25 @@ export default function Footer() {
                   <CheckCircle2 size={48} className="text-teal" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">¡Mensaje enviado!</h3>
-                <p className="text-muted text-sm mb-6">Tu mensaje ha sido enviado directamente a ginialtech@gmail.com. Te contactaremos pronto.</p>
+                <p className="text-[#7FA8A0] text-sm mb-6">Tu mensaje ha sido enviado. Te contactaremos pronto.</p>
+                
+                <div className="mb-8 p-6 bg-[#F5A623]/5 border border-[#F5A623]/20 rounded-xl">
+                  <p className="text-xs text-slate-300 leading-relaxed mb-4">
+                    ¡Gracias por ayudarme a mejorar! 🚀 Si te gusta lo que estoy armando en <strong>Ginialtech</strong>, podés invitarme un cafecito para que las APIs sigan encendidas.
+                  </p>
+                  <a 
+                    href="https://cafecito.app/ginialtech" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#F5A623] hover:bg-[#F5A623]/90 text-[#0F1924] font-black rounded-lg transition-all duration-300 hover:scale-[1.05] shadow-md text-xs"
+                  >
+                    ☕ Invitar un Cafecito
+                  </a>
+                </div>
+
                 <button 
                   onClick={() => setIsModalOpen(false)}
-                  className="px-6 py-2 bg-teal text-dark font-bold rounded-lg hover:bg-tealL transition-colors"
+                  className="px-6 py-2 text-[#7FA8A0] hover:text-white text-[11px] font-bold uppercase tracking-widest transition-colors"
                 >
                   Cerrar
                 </button>
