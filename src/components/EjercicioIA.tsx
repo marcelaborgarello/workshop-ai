@@ -18,14 +18,31 @@ export default function EjercicioIA({ ejercicioId }: EjercicioIAProps) {
   const [status, setStatus] = useState<"idle" | "loading" | "streaming" | "done" | "error">("idle");
   const [currentResponse, setCurrentResponse] = useState<string>("");
   const [followUp, setFollowUp] = useState("");
+  const [expandedMessages, setExpandedMessages] = useState<Record<number, boolean>>({});
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll al final cuando hay streaming o nuevos mensajes
+  // Auto-scroll inteligente (Standard Senior): 
+  // Solo scrolleamos si el usuario ya está cerca del fondo.
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    if (scrollRef.current && (status === "streaming" || status === "loading")) {
+      const container = scrollRef.current.parentElement;
+      if (container) {
+        const { scrollTop, scrollHeight, clientHeight } = container;
+        const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
+        
+        if (isNearBottom) {
+          scrollRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+      }
     }
-  }, [currentResponse, messages]);
+  }, [currentResponse, messages, status]);
+
+  const toggleExpand = (idx: number) => {
+    setExpandedMessages(prev => ({
+      ...prev,
+      [idx]: !prev[idx]
+    }));
+  };
 
   const obtenerContenidoInicial = () => {
     if (ejercicioId === "b1") {
@@ -126,6 +143,7 @@ export default function EjercicioIA({ ejercicioId }: EjercicioIAProps) {
     window.dispatchEvent(new Event("storage"));
     
     setMessages([]);
+    setExpandedMessages({});
     setCurrentResponse("");
     setStatus("idle");
   };
@@ -173,26 +191,40 @@ export default function EjercicioIA({ ejercicioId }: EjercicioIAProps) {
       </div>
 
       <div className="space-y-4">
-        {messages.map((m, idx) => (
-          <div 
-            key={idx} 
-            className={`p-5 rounded-2xl border backdrop-blur-sm shadow-sm animate-in fade-in slide-in-from-top-2 ${
-              m.role === "assistant" 
-                ? "bg-[#132236]/80 border-[#7B5EA7]/30 text-[#E8F0EE]" 
-                : "bg-[#1A2E3D]/50 border-white/5 text-[#7FA8A0] ml-8"
-            }`}
-          >
-            <div className="flex items-center gap-2 mb-3">
-              <div className={`w-2 h-2 rounded-full ${m.role === "assistant" ? "bg-[#7B5EA7]" : "bg-[#F5A623]"}`} />
-              <span className="text-[11px] font-bold uppercase tracking-widest opacity-80">
-                {m.role === "assistant" ? "Asistente Ginialtech" : "Tu contenido / pregunta"}
-              </span>
+        {messages.map((m, idx) => {
+          const isExpanded = expandedMessages[idx];
+          const isAssistant = m.role === "assistant";
+
+          return (
+            <div 
+              key={idx} 
+              className={`p-5 rounded-2xl border backdrop-blur-sm shadow-sm animate-in fade-in slide-in-from-top-2 ${
+                isAssistant
+                  ? "bg-[#132236]/80 border-[#7B5EA7]/30 text-[#E8F0EE]" 
+                  : "bg-[#1A2E3D]/50 border-white/5 text-[#7FA8A0] ml-8"
+              }`}
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <div className={`w-2 h-2 rounded-full ${isAssistant ? "bg-[#7B5EA7]" : "bg-[#F5A623]"}`} />
+                <span className="text-[11px] font-bold uppercase tracking-widest opacity-80">
+                  {isAssistant ? "Asistente Ginialtech" : "Tu contenido / pregunta"}
+                </span>
+              </div>
+              <div className={`ai-markdown-content text-sm leading-relaxed font-medium transition-all duration-300 ${isAssistant && !isExpanded ? "line-clamp-3 overflow-hidden" : ""}`}>
+                <ReactMarkdown>{m.content}</ReactMarkdown>
+              </div>
+              
+              {isAssistant && (
+                <button
+                  onClick={() => toggleExpand(idx)}
+                  className="mt-3 text-[10px] font-bold text-[#F5A623] hover:text-[#F5A623]/80 uppercase tracking-widest flex items-center gap-1 transition-colors"
+                >
+                  {isExpanded ? "Ver menos ↑" : "Ver más ↓"}
+                </button>
+              )}
             </div>
-            <div className="ai-markdown-content text-sm leading-relaxed font-medium">
-              <ReactMarkdown>{m.content}</ReactMarkdown>
-            </div>
-          </div>
-        ))}
+          );
+        })}
 
         {status === "loading" && (
           <div className="p-5 rounded-2xl border bg-[#132236]/80 border-[#7B5EA7]/30 text-[#E8F0EE] backdrop-blur-sm shadow-inner animate-in fade-in">

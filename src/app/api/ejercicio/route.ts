@@ -27,6 +27,42 @@ const PROMPTS_BY_ID: Record<string, string> = {
   adv: "El participante está en el bloque avanzado (MCP, agentes, guardrails). Respondé con profundidad técnica, con ejemplos de código TypeScript cuando corresponda.",
 };
 
+// Definición de interfaz para el cliente de modelos (Workaround para tipos de SDK)
+interface GeminiModelsClient {
+  generateContentStream: (params: { model: string; contents: Content[] }) => Promise<AsyncGenerator<{ text: string }, void, unknown>>;
+}
+
+// Función auxiliar para reintentos con backoff exponencial (Standard Senior)
+async function generateContentWithRetry(
+  client: GoogleGenAI, 
+  params: { model: string; contents: Content[] }, 
+  maxRetries = 3
+) {
+  let lastError: Error | unknown;
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      // Acceso tipado al método models
+      const modelClient = (client as unknown as { models: GeminiModelsClient }).models;
+      return await modelClient.generateContentStream(params);
+    } catch (err: unknown) {
+      lastError = err;
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      const isOverloaded = errorMessage.includes("503") || 
+                           errorMessage.includes("overloaded") || 
+                           errorMessage.includes("Service Unavailable");
+      
+      if (isOverloaded && i < maxRetries - 1) {
+        const delay = Math.pow(2, i) * 1000;
+        console.log(`[Gemini] Servicio sobrecargado. Reintentando en ${delay}ms... (Intento ${i + 1}/${maxRetries})`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+        continue;
+      }
+      throw err;
+    }
+  }
+  throw lastError;
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { ejercicioId, messages }: ExerciseRequest = await req.json();
@@ -40,12 +76,8 @@ export async function POST(req: NextRequest) {
 
     const specificPrompt = PROMPTS_BY_ID[ejercicioId] || "Respondé de forma general sobre el workshop.";
     
-    // Mapeamos los mensajes al formato de Gemini
-    // El primer mensaje debe contener el contexto del sistema y del ejercicio
     const geminiMessages: Content[] = messages.map((m, index) => {
       let text = m.content;
-      
-      // Si es el primer mensaje del usuario, le inyectamos los prompts de sistema/ejercicio
       if (index === 0 && m.role === "user") {
         text = `
           ${SYSTEM_PROMPT_BASE}
@@ -64,8 +96,9 @@ export async function POST(req: NextRequest) {
       };
     });
 
-    const result = await client.models.generateContentStream({
-      model: "gemini-3-flash-preview",
+    // Usamos gemini-3.1-flash-lite-preview con reintentos para mitigar el error 503
+    const result = await generateContentWithRetry(client, {
+      model: "gemini-3.1-flash-lite-preview",
       contents: geminiMessages,
     });
 
@@ -73,6 +106,7 @@ export async function POST(req: NextRequest) {
     const stream = new ReadableStream({
       async start(controller) {
         try {
+          // El resultado del streaming del nuevo SDK se itera directamente
           for await (const chunk of result) {
             const text = chunk.text;
             if (text) {
@@ -96,11 +130,16 @@ export async function POST(req: NextRequest) {
       },
     });
 
-  } catch (error) {
-    console.error("Gemini Error:", error);
+  } catch (error: unknown) {
+    console.error("Gemini Final Error:", error);
+    const errorMessage = error instanceof Error ? error.message : "";
+    const status = errorMessage.includes("503") ? 503 : 500;
     return NextResponse.json(
-      { error: "Error al procesar la IA. Verificá que la API KEY sea válida." },
-      { status: 500 }
+      { 
+        error: "Error al conectar con Gemini. El servicio puede estar sobrecargado.",
+        details: errorMessage 
+      },
+      { status }
     );
   }
 }
