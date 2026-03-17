@@ -3,9 +3,12 @@ Página interactiva del Workshop de Inteligencia Artificial de Ginialtech. Inclu
 Stack
 
 Next.js 15 (App Router) · TypeScript · Tailwind CSS
-Gemini Flash — ejercicios interactivos con IA
+Gemini 3 Flash — ejercicios interactivos con IA
 Resend — envío de feedback y contacto por email
 Vercel — deploy
+
+> [!IMPORTANT]
+> **Notas para Agentes de IA / LLMs**: Si estás trabajando en este repositorio, es obligatorio leer primero el archivo [rules.md](rules.md). Allí se encuentran las directrices de personalización (trato con Marcela), estándares técnicos nivel Senior y políticas de idioma del proyecto.
 
 Setup
 bash
