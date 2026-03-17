@@ -2,6 +2,7 @@ import EditableField from "./EditableField";
 import Checklist from "./Checklist";
 import FeedbackForm from "./FeedbackForm";
 import AdvancedToggle from "./AdvancedToggle";
+import EjercicioIA from "./EjercicioIA";
 
 export default function WorkshopGuide() {
   return (
@@ -81,6 +82,7 @@ export default function WorkshopGuide() {
           <p>Anotá dos cosas que creías sobre la IA y que este bloque confirmó o desmintió:</p>
           <EditableField id="b1_confirmado" label="Confirmado:" placeholder="Ej: Que la IA en realidad no entiende el lenguaje como nosotros..." />
           <EditableField id="b1_desmitificado" label="Desmitificado:" placeholder="Ej: Creía que la IA tenía memoria entre conversaciones..." />
+          <EjercicioIA ejercicioId="b1" />
         </div>
 
         <hr />
@@ -148,12 +150,13 @@ export default function WorkshopGuide() {
           <h3>El desafío del prompt</h3>
           <p>Tomá este prompt pobre y reescribilo con las 5 partes.</p>
           <p style={{ marginTop: "8px", fontStyle: "italic", opacity: 0.7 }}>❌ Prompt original: <strong>{"\""}Haceme un resumen del mercado de IA.{"\""}</strong></p>
-          <EditableField 
-            id="b2_mejorado" 
-            label="Tu prompt mejorado (usá las 5 partes):" 
+          <EditableField
+            id="b2_mejorado"
+            label="Tu prompt mejorado (usá las 5 partes):"
             rows={6}
-            placeholder="[ROL] Sos un/a...\n[CONTEXTO] Trabajo en...\n[TAREA] Necesito que...\n[FORMATO] Respondé en...\n[RESTRICCIONES] No..." 
+            placeholder="[ROL] Sos un/a...\n[CONTEXTO] Trabajo en...\n[TAREA] Necesito que...\n[FORMATO] Respondé en...\n[RESTRICCIONES] No..."
           />
+          <EjercicioIA ejercicioId="b2" />
           <EditableField id="b2_diferencia" label="¿Qué diferencia notaste en el resultado?" placeholder="Anotá acá lo que observaste..." />
         </div>
 
@@ -192,6 +195,7 @@ export default function WorkshopGuide() {
           <h3>¿Qué tarea haría yo con IA esta semana?</h3>
           <EditableField id="b3_tareas" label="Mis 3 tareas candidatas:" placeholder="1. ...\n2. ...\n3. ..." rows={3} />
           <EditableField id="b3_prompt" label="La que elegí y el prompt que armé:" placeholder="Prompt para la tarea elegida..." rows={4} />
+          <EjercicioIA ejercicioId="b3" />
         </div>
 
         <hr />
@@ -229,6 +233,7 @@ export default function WorkshopGuide() {
           <h3>Generación de código en vivo</h3>
           <EditableField id="b4_prompt" label="Prompt usado:" placeholder="Anotá el prompt..." />
           <EditableField id="b4_observado" label="Lo que más me llamó la atención:" placeholder="Observaciones..." />
+          <EjercicioIA ejercicioId="b4" />
         </div>
 
         <hr />
@@ -251,14 +256,14 @@ export default function WorkshopGuide() {
           </ul>
         </div>
 
-        <Checklist 
-          title="Mi checklist de uso responsable" 
+        <Checklist
+          title="Mi checklist de uso responsable"
           items={[
             { id: "check_verificar", text: "Verifico los datos importantes antes de usarlos" },
             { id: "check_privacidad", text: "No comparto datos confidenciales con IAs externas" },
             { id: "check_codigo", text: "Reviso el código generado antes de producir" },
             { id: "check_transparencia", text: "Soy transparente sobre el uso de asistentes IA" },
-          ]} 
+          ]}
         />
 
         <hr />
@@ -286,41 +291,6 @@ export default function WorkshopGuide() {
 
         <hr />
 
-        {/* ── RECURSOS ────────────────────────────── */}
-        <div className="bloque-header" id="recursos">
-          <div className="bloque-num bg-teal">🔗</div>
-          <div>
-            <h2>Recursos y links</h2>
-            <span className="tiempo">Para seguir aprendiendo</span>
-          </div>
-        </div>
-
-        <div className="recursos-grid">
-          <div className="recurso">
-            <h4>📚 Cursos</h4>
-            <ul>
-              <li>DeepLearning.AI</li>
-              <li>Google AI Essentials</li>
-            </ul>
-          </div>
-          <div className="recurso">
-            <h4>📡 Newsletters</h4>
-            <ul>
-              <li>The Rundown AI</li>
-              <li>TLDR AI</li>
-            </ul>
-          </div>
-          <div className="recurso">
-            <h4>⭐ Ginialtech</h4>
-            <ul>
-              <li>ginialtech.com</li>
-              <li>resource@ginialtech</li>
-            </ul>
-          </div>
-        </div>
-
-        <hr />
-
         {/* ── FEEDBACK ────────────────────────────── */}
         <div className="bloque-header">
           <div className="bloque-num bg-pink">★</div>
@@ -344,11 +314,33 @@ export default function WorkshopGuide() {
           </ul>
         </div>
 
-        <div style={{ textAlign: "center", marginTop: "48px", color: "var(--muted)", fontSize: "13px" }}>
-          <p>Workshop de Inteligencia Artificial · Ginialtech · <a href="https://ginialtech.com" style={{ color: "var(--teal)", textDecoration: "none" }}>ginialtech.com</a></p>
-          <p style={{ marginTop: "4px", fontSize: "11px" }}>Recurso de uso libre con atribución · Marzo 2025</p>
+        <hr />
+
+        {/* ── RECURSOS ────────────────────────────── */}
+        <div className="bloque-header" id="recursos">
+          <div className="bloque-num bg-teal">🔗</div>
+          <div>
+            <h2>Recursos y links</h2>
+            <span className="tiempo">Para seguir aprendiendo</span>
+          </div>
         </div>
 
+        <div className="recursos-grid">
+          <div className="recurso-box">
+            <h4>📚 CURSOS</h4>
+            <ul>
+              <li><a href="https://www.deeplearning.ai/" target="_blank" rel="noopener noreferrer">DeepLearning.AI</a></li>
+              <li><a href="https://grow.google/ai-essentials/" target="_blank" rel="noopener noreferrer">Google AI Essentials</a></li>
+            </ul>
+          </div>
+          <div className="recurso-box">
+            <h4>📡 NEWSLETTERS</h4>
+            <ul>
+              <li><a href="https://www.therundown.ai/" target="_blank" rel="noopener noreferrer">The Rundown AI</a></li>
+              <li><a href="https://tldr.tech/ai" target="_blank" rel="noopener noreferrer">TLDR AI</a></li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );

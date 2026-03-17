@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Workshop de IA — Ginialtech
+Página interactiva del Workshop de Inteligencia Artificial de Ginialtech. Incluye guía del participante, ejercicios con IA en vivo y bloque avanzado para developers.
+Stack
 
-## Getting Started
+Next.js 15 (App Router) · TypeScript · Tailwind CSS
+Gemini Flash — ejercicios interactivos con IA
+Resend — envío de feedback y contacto por email
+Vercel — deploy
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+Setup
+bash
+bun install
+cp .env.example .env.local
 bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Variables de entorno
+GOOGLE_API_KEY=     # Google AI Studio
+RESEND_API_KEY=     # resend.com
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
+bash
+bun dev              # desarrollo (puerto 3002)
+bun run build        # build de producción
+bun run check        # verificación de calidad de código
+bunx tsc --noEmit    # chequeo de tipos
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Estructura
+src/
+├── app/
+│   ├── api/
+│   │   ├── ejercicio/   # Gemini Flash streaming
+│   │   ├── contact/     # Resend email (Contacto)
+│   │   └── feedback/    # Resend email (Feedback)
+│   ├── page.tsx
+│   └── workshop.css
+└── components/
+    ├── Header.tsx       # Navegación y logo
+    ├── Footer.tsx       # Contacto real con Resend
+    ├── WorkshopGuide.tsx
+    ├── AdvancedContent.tsx
+    ├── AdvancedToggle.tsx
+    ├── EditableField.tsx
+    ├── Checklist.tsx
+    ├── FeedbackStars.tsx
+    ├── FeedbackForm.tsx # Validación obligatoria
+    └── EjercicioIA.tsx  # Markdown + Limpieza reactiva
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deploy
+Vercel. Variables de entorno en Settings → Environment Variables.

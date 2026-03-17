@@ -24,10 +24,16 @@ export default function EditableField({
 
   useEffect(() => {
     setMounted(true);
-    const saved = sessionStorage.getItem(`wa_${id}`);
-    if (saved) {
-      setValue(saved);
-    }
+    const loadValue = () => {
+      const saved = sessionStorage.getItem(`wa_${id}`);
+      setValue(saved || "");
+    };
+
+    loadValue();
+
+    // Escuchar cambios externos (de EjercicioIA o otras pestañas)
+    window.addEventListener("storage", loadValue);
+    return () => window.removeEventListener("storage", loadValue);
   }, [id]);
 
   const handleChange = (val: string) => {

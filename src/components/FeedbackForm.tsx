@@ -11,8 +11,13 @@ export default function FeedbackForm() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async () => {
-    if (rating === 0) {
-      setErrorMessage("Por favor, seleccioná una valoración con estrellas.");
+    const valuable = sessionStorage.getItem("wa_valuable") || "";
+    const improvements = sessionStorage.getItem("wa_improvements") || "";
+    const recommend = sessionStorage.getItem("wa_recommend") || "";
+    const pendingTopics = sessionStorage.getItem("wa_pendingTopics") || "";
+
+    if (rating === 0 || !valuable.trim() || !improvements.trim() || !recommend.trim()) {
+      setErrorMessage("Por favor, completá todos los campos obligatorios y seleccioná una valoración.");
       setStatus("error");
       return;
     }
@@ -21,11 +26,6 @@ export default function FeedbackForm() {
     setErrorMessage("");
 
     try {
-      const valuable = sessionStorage.getItem("wa_valuable") || "";
-      const improvements = sessionStorage.getItem("wa_improvements") || "";
-      const recommend = sessionStorage.getItem("wa_recommend") || "";
-      const pendingTopics = sessionStorage.getItem("wa_pendingTopics") || "";
-
       const response = await fetch("/api/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

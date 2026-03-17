@@ -1,4 +1,5 @@
 import EditableField from "./EditableField";
+import EjercicioIA from "./EjercicioIA";
 
 export default function AdvancedContent() {
   return (
@@ -97,6 +98,7 @@ server.tool(
           label="Caso de uso concreto que me ahorraría tiempo:" 
           placeholder="Ej: Que Claude lea mis migrations de Prisma y me sugiera índices faltantes..."
         />
+        <EjercicioIA ejercicioId="adv" />
       </div>
 
       <hr />
@@ -176,6 +178,7 @@ Multi-tenant. Cada club es un tenant con su propia configuración.
         <EditableField id="adv_stack" label="Stack técnico del proyecto:" placeholder="Framework, ORM, auth, deploy..." />
         <EditableField id="adv_convenciones" label="Convenciones de código:" placeholder="Nombres de archivos, idioma, patrones..." />
         <EditableField id="adv_no_hacer" label="Lo que la IA NO puede hacer sin consultarte:" placeholder="Modificar el schema, instalar deps..." />
+        <EjercicioIA ejercicioId="adv" />
       </div>
 
       <hr />

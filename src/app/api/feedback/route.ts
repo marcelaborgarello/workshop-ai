@@ -2,7 +2,7 @@ import { Resend } from "resend";
 import { NextResponse } from "next/server";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const RECIPIENT_EMAIL = "impre@ginialtech.com"; // TODO: Cambiar por la dirección real si difiere
+const RECIPIENT_EMAIL = "ginialtech@gmail.com"; // TODO: Cambiar por la dirección real si difiere
 
 interface FeedbackData {
   rating: number;
