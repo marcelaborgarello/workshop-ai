@@ -63,7 +63,7 @@ export default function Footer() {
       {/* MODAL DE CONTACTO */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-dark/80 backdrop-blur-sm">
-          <div className="relative w-full max-w-md bg-[#132236] border border-[#7B5EA7]/30 rounded-2xl shadow-2xl p-8 animate-in fade-in zoom-in duration-300">
+          <div className="relative w-full max-w-md max-h-[calc(100vh-2rem)] bg-[#132236] border border-[#7B5EA7]/30 rounded-2xl shadow-2xl p-6 sm:p-8 overflow-y-auto animate-in fade-in zoom-in duration-300">
             <button 
               onClick={() => { setIsModalOpen(false); setStatus("idle"); }}
               className="absolute top-4 right-4 text-muted hover:text-white transition-colors"

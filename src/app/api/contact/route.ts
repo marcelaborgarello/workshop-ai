@@ -1,18 +1,40 @@
 import { Resend } from 'resend';
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
+import { z } from 'zod';
+import { rateLimit } from '@/lib/rate-limit';
+
+const ContactSchema = z.object({
+  name: z.string().min(1, "El nombre es obligatorio").max(100),
+  email: z.string().email("El formato de email es inválido"),
+  message: z.string().min(5, "El mensaje es muy corto").max(2000, "El mensaje es muy largo")
+});
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const { name, email, message } = await req.json();
-
-    if (!name || !email || !message) {
+    const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
+    // Límite estricto: 3 mails por minuto por IP para evitar spam via forms
+    const rateLimitResult = rateLimit(ip, 3, 60000);
+    
+    if (!rateLimitResult.success) {
       return NextResponse.json(
-        { error: "Todos los campos son obligatorios" },
+        { error: "Demasiados envíos. Por favor, esperá un minuto." },
+        { status: 429 }
+      );
+    }
+
+    const unvalidatedBody = await req.json().catch(() => ({}));
+    const parseResult = ContactSchema.safeParse(unvalidatedBody);
+
+    if (!parseResult.success) {
+      return NextResponse.json(
+        { error: "Datos de contacto inválidos", details: parseResult.error.format() },
         { status: 400 }
       );
     }
+
+    const { name, email, message } = parseResult.data;
 
     const { data, error } = await resend.emails.send({
       from: 'Workshop IA <onboarding@resend.dev>',

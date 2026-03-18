@@ -1,37 +1,50 @@
 import { Resend } from "resend";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
+import { z } from "zod";
+import { rateLimit } from "@/lib/rate-limit";
+
+const FeedbackSchema = z.object({
+  rating: z.number().min(1, "La valoración mínima es 1").max(5, "La valoración máxima es 5"),
+  valuable: z.string().max(2000), // Previene payloads masivos
+  improvements: z.string().max(2000),
+  recommend: z.string().max(2000),
+  pendingTopics: z.string().max(2000).optional(),
+});
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const RECIPIENT_EMAIL = "ginialtech@gmail.com"; // TODO: Cambiar por la dirección real si difiere
+const RECIPIENT_EMAIL = "ginialtech@gmail.com"; 
 
-interface FeedbackData {
-  rating: number;
-  valuable: string;
-  improvements: string;
-  recommend: string;
-  pendingTopics: string;
-}
-
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
+    // Limite estricto: 5 feedbacks por minuto por IP
+    const rateLimitResult = rateLimit(ip, 5, 60000);
+    
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { error: "Demasiados envíos de feedback seguidos. Reintentá en un minuto." },
+        { status: 429 }
+      );
+    }
+
     if (!process.env.RESEND_API_KEY) {
       return NextResponse.json(
-        { error: "RESEND_API_KEY is not configured" },
+        { error: "Servidor mal configurado, falta RESEND_API_KEY" },
         { status: 500 }
       );
     }
 
-    const data: FeedbackData = await req.json();
+    const unvalidatedBody = await req.json().catch(() => ({}));
+    const parseResult = FeedbackSchema.safeParse(unvalidatedBody);
 
-    // Basic validation
-    if (!data.rating) {
+    if (!parseResult.success) {
       return NextResponse.json(
-        { error: "Rating is required" },
+        { error: "Datos de feedback inválidos", details: parseResult.error.format() },
         { status: 400 }
       );
     }
 
-    const { rating, valuable, improvements, recommend, pendingTopics } = data;
+    const { rating, valuable, improvements, recommend, pendingTopics } = parseResult.data;
 
     const { data: emailData, error } = await resend.emails.send({
       from: "Workshop Ginialtech <onboarding@resend.dev>",

@@ -154,7 +154,7 @@ export default function EjercicioIA({ ejercicioId }: EjercicioIAProps) {
         <button
           onClick={handleProbarIA}
           disabled={status === "loading" || status === "streaming"}
-          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold transition-all duration-300 shadow-lg ${
+          className={`flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold transition-all duration-300 shadow-lg ${
             status === "loading" || status === "streaming"
               ? "bg-slate-700 text-slate-400 cursor-not-allowed"
               : "bg-[#F5A623] hover:bg-[#F5A623]/90 text-[#0F1924] hover:scale-[1.02] active:scale-[0.98]"
@@ -177,7 +177,7 @@ export default function EjercicioIA({ ejercicioId }: EjercicioIAProps) {
         {messages.length > 0 && status === "done" && (
           <button
             onClick={handleLimpiar}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold bg-[#1A2E3D] hover:bg-[#1A2E3D]/80 text-[#E8F0EE] border border-[#7B5EA7]/30 transition-all duration-300 hover:scale-[1.02] shadow-md"
+            className="flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-bold bg-[#1A2E3D] hover:bg-[#1A2E3D]/80 text-[#E8F0EE] border border-[#7B5EA7]/30 transition-all duration-300 hover:scale-[1.02] shadow-md"
           >
             🗑️ Limpiar campos
           </button>
@@ -198,10 +198,10 @@ export default function EjercicioIA({ ejercicioId }: EjercicioIAProps) {
           return (
             <div 
               key={idx} 
-              className={`p-5 rounded-2xl border backdrop-blur-sm shadow-sm animate-in fade-in slide-in-from-top-2 ${
+              className={`p-4 sm:p-5 rounded-2xl border backdrop-blur-sm shadow-sm animate-in fade-in slide-in-from-top-2 ${
                 isAssistant
                   ? "bg-[#132236]/80 border-[#7B5EA7]/30 text-[#E8F0EE]" 
-                  : "bg-[#1A2E3D]/50 border-white/5 text-[#7FA8A0] ml-8"
+                  : "bg-[#1A2E3D]/50 border-white/5 text-[#7FA8A0] ml-3 sm:ml-8"
               }`}
             >
               <div className="flex items-center gap-2 mb-3">
@@ -227,7 +227,7 @@ export default function EjercicioIA({ ejercicioId }: EjercicioIAProps) {
         })}
 
         {status === "loading" && (
-          <div className="p-5 rounded-2xl border bg-[#132236]/80 border-[#7B5EA7]/30 text-[#E8F0EE] backdrop-blur-sm shadow-inner animate-in fade-in">
+          <div className="p-4 sm:p-5 rounded-2xl border bg-[#132236]/80 border-[#7B5EA7]/30 text-[#E8F0EE] backdrop-blur-sm shadow-inner animate-in fade-in">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-2 h-3 flex gap-1 items-center">
                 <span className="w-1.5 h-1.5 bg-[#F5A623] rounded-full animate-bounce [animation-delay:-0.3s]"></span>
@@ -243,7 +243,7 @@ export default function EjercicioIA({ ejercicioId }: EjercicioIAProps) {
         )}
 
         {currentResponse && (
-          <div className="p-5 rounded-2xl border bg-[#132236]/80 border-[#7B5EA7]/30 text-[#E8F0EE] backdrop-blur-sm shadow-inner animate-in fade-in">
+          <div className="p-4 sm:p-5 rounded-2xl border bg-[#132236]/80 border-[#7B5EA7]/30 text-[#E8F0EE] backdrop-blur-sm shadow-inner animate-in fade-in">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
               <span className="text-[11px] font-bold uppercase tracking-widest text-[#7FA8A0]">

@@ -10,7 +10,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 w-full bg-[#132236]/95 backdrop-blur-md border-b border-[#7B5EA7]/20 px-6 py-4 flex items-center justify-between gap-4 shadow-xl z-50">
+    <header className="sticky top-0 w-full bg-[#132236]/95 backdrop-blur-md border-b border-[#7B5EA7]/20 px-4 sm:px-6 py-4 flex items-center justify-between gap-4 shadow-xl z-50">
       <div className="flex items-center gap-4">
         <a 
           href="#" 

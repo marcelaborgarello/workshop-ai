@@ -32,7 +32,7 @@ export default function TermsModal() {
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 backdrop-blur-xl bg-[#0F1924]/80 animate-in fade-in duration-500">
-      <div className="relative w-full max-w-2xl bg-[#132236] border border-[#7B5EA7]/30 rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-4 duration-500">
+      <div className="relative w-full max-w-2xl max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-3rem)] bg-[#132236] border border-[#7B5EA7]/30 rounded-3xl shadow-2xl overflow-y-auto overflow-x-hidden animate-in zoom-in-95 slide-in-from-bottom-4 duration-500">
         
         {/* Header Decorativo */}
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#7B5EA7] to-transparent opacity-50" />

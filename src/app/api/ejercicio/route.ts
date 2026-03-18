@@ -1,18 +1,18 @@
 import { GoogleGenAI, Content } from "@google/genai";
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+import { rateLimit } from "@/lib/rate-limit";
 
-// Estructura de la solicitud para soportar chat multiturno
-interface ChatMessage {
-  role: "user" | "assistant";
-  content: string;
-}
+const EjercicioSchema = z.object({
+  ejercicioId: z.string().min(1, "El ID del ejercicio es obligatorio"),
+  messages: z.array(
+    z.object({
+      role: z.enum(["user", "assistant"]),
+      content: z.string().min(1, "El contenido no puede estar vacío"),
+    })
+  ).min(1, "Se requiere al menos un mensaje"),
+});
 
-interface ExerciseRequest {
-  ejercicioId: string;
-  messages: ChatMessage[];
-}
-
-// Configuración de Gemini (SDK Nuevo @google/genai)
 const client = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY || "" });
 
 const SYSTEM_PROMPT_BASE = `Sos un asistente técnico del Workshop de IA de Ginialtech. Respondés en español de Argentina, de forma concisa y didáctica.
@@ -28,7 +28,6 @@ Si el usuario menciona temas personales, de salud, sentimientos o cualquier cosa
 2. RESPUESTA CORTANTE Y TÉCNICA: No pidas disculpas ni simules empatía. Tu respuesta debe ser: "Soy una inteligencia artificial sin sentimientos ni conciencia real. Mi único rol es asistirte técnicamente en este workshop. Por favor, centrémonos en el ejercicio pendiente."
 3. REDIRECCIÓN INMEDIATA: Evaluá la parte técnica del mensaje (si existe) y redirigí al usuario al siguiente paso del ejercicio. Si no hay contenido técnico, limitate a la aclaración del punto 2 e invitá a usar el botón "Limpiar conversación" si prefiere retomar después.`;
 
-
 const PROMPTS_BY_ID: Record<string, string> = {
   b1: "El participante reflexionó sobre mitos de la IA. Evaluá si su reflexión es correcta y completá con información precisa.",
   b2: "El participante reescribió un prompt con las 5 partes (rol, contexto, tarea, formato, restricciones). Evaluá qué partes incluyó, cuáles faltan, y luego ejecutá el prompt mejorado. Al final de tu respuesta, preguntale al participante: '¿Qué diferencias notaste en el resultado respecto al prompt original?'",
@@ -37,12 +36,7 @@ const PROMPTS_BY_ID: Record<string, string> = {
   adv: "El participante está en el bloque avanzado (MCP, agentes, guardrails). Respondé con profundidad técnica, con ejemplos de código TypeScript cuando corresponda.",
 };
 
-// Definición de interfaz para el cliente de modelos (Workaround para tipos de SDK)
-interface GeminiModelsClient {
-  generateContentStream: (params: { model: string; contents: Content[] }) => Promise<AsyncGenerator<{ text: string }, void, unknown>>;
-}
-
-// Función auxiliar para reintentos con backoff exponencial (Standard Senior)
+// Reintentos con backoff exponencial. Eliminamos la interfaz "GeminiModelsClient" usando el typing original.
 async function generateContentWithRetry(
   client: GoogleGenAI,
   params: { model: string; contents: Content[] },
@@ -51,9 +45,10 @@ async function generateContentWithRetry(
   let lastError: Error | unknown;
   for (let i = 0; i < maxRetries; i++) {
     try {
-      // Acceso tipado al método models
-      const modelClient = (client as unknown as { models: GeminiModelsClient }).models;
-      return await modelClient.generateContentStream(params);
+      const modelClient = client as unknown as { 
+        models: { generateContentStream: (p: { model: string; contents: Content[] }) => Promise<AsyncIterable<{ text?: string }>> } 
+      };
+      return await modelClient.models.generateContentStream(params);
     } catch (err: unknown) {
       lastError = err;
       const errorMessage = err instanceof Error ? err.message : String(err);
@@ -75,15 +70,28 @@ async function generateContentWithRetry(
 
 export async function POST(req: NextRequest) {
   try {
-    const { ejercicioId, messages }: ExerciseRequest = await req.json();
-
-    if (!ejercicioId || !messages || !Array.isArray(messages) || messages.length === 0) {
+    const ip = req.headers.get("x-forwarded-for") ?? "127.0.0.1";
+    // Limite laxo: 15 llamadas por minuto por IP para el chat de IA
+    const rateLimitResult = rateLimit(ip, 15, 60000);
+    
+    if (!rateLimitResult.success) {
       return NextResponse.json(
-        { error: "Faltan datos obligatorios (ejercicioId o historial de mensajes)" },
+        { error: "Demasiadas peticiones. Por favor, esperá un momento antes de enviar otra." },
+        { status: 429 }
+      );
+    }
+
+    const unvalidatedBody = await req.json().catch(() => ({}));
+    const parseResult = EjercicioSchema.safeParse(unvalidatedBody);
+
+    if (!parseResult.success) {
+      return NextResponse.json(
+        { error: "Datos inválidos", details: parseResult.error.format() },
         { status: 400 }
       );
     }
 
+    const { ejercicioId, messages } = parseResult.data;
     const specificPrompt = PROMPTS_BY_ID[ejercicioId] || "Respondé de forma general sobre el workshop.";
 
     const geminiMessages: Content[] = messages.map((m, index) => {
@@ -106,7 +114,6 @@ export async function POST(req: NextRequest) {
       };
     });
 
-    // Usamos gemini-3.1-flash-lite-preview con reintentos para mitigar el error 503
     const result = await generateContentWithRetry(client, {
       model: "gemini-3.1-flash-lite-preview",
       contents: geminiMessages,
@@ -116,8 +123,8 @@ export async function POST(req: NextRequest) {
     const stream = new ReadableStream({
       async start(controller) {
         try {
-          // El resultado del streaming del nuevo SDK se itera directamente
-          for await (const chunk of result) {
+          const asyncStream = result as unknown as AsyncIterable<{ text?: string }>;
+          for await (const chunk of asyncStream) {
             const text = chunk.text;
             if (text) {
               controller.enqueue(encoder.encode(String(text)));

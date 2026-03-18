@@ -57,14 +57,14 @@ export default function FeedbackForm() {
 
   if (status === "success") {
     return (
-      <div className="card text-center p-12 border-teal">
+      <div className="card text-center p-6 sm:p-12 border-teal">
         <div className="flex justify-center mb-4">
           <CheckCircle2 size={48} className="text-teal" />
         </div>
         <h3 className="text-xl font-bold mb-2">¡Gracias por tu feedback!</h3>
         <p className="text-muted text-sm px-4">Tu opinión es fundamental para que Ginialtech siga mejorando estos workshops.</p>
         
-        <div className="mt-8 p-6 bg-[#F5A623]/5 border border-[#F5A623]/20 rounded-2xl animate-in fade-in zoom-in duration-500">
+        <div className="mt-8 p-4 sm:p-6 bg-[#F5A623]/5 border border-[#F5A623]/20 rounded-2xl animate-in fade-in zoom-in duration-500">
           <p className="text-sm text-slate-300 leading-relaxed mb-4">
             ¡Gracias por ayudarme a mejorar! 🚀 Si te gusta lo que estoy armando en <strong>Ginialtech</strong>, podés invitarme un cafecito para que las APIs sigan encendidas.
           </p>
@@ -72,7 +72,7 @@ export default function FeedbackForm() {
             href="https://cafecito.app/ginialtech" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[#F5A623] hover:bg-[#F5A623]/90 text-[#0F1924] font-black rounded-xl transition-all duration-300 hover:scale-[1.05] shadow-lg"
+            className="inline-flex items-center gap-2 px-4 py-3 sm:px-6 bg-[#F5A623] hover:bg-[#F5A623]/90 text-[#0F1924] font-black rounded-xl transition-all duration-300 hover:scale-[1.05] shadow-lg"
           >
             ☕ Invitar un Cafecito
           </a>
@@ -133,7 +133,7 @@ export default function FeedbackForm() {
       <button
         onClick={handleSubmit}
         disabled={status === "loading"}
-        className="group relative flex items-center justify-center gap-2 w-full py-4 bg-navy text-teal font-bold rounded-xl border-2 border-teal hover:bg-teal hover:text-dark transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-teal/20"
+        className="group relative flex items-center justify-center gap-2 w-full py-3 sm:py-4 bg-navy text-teal font-bold rounded-xl border-2 border-teal hover:bg-teal hover:text-dark transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-teal/20"
       >
         {status === "loading" ? (
           <Loader2 className="animate-spin" size={20} />
