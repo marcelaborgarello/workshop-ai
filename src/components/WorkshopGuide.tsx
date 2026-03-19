@@ -157,7 +157,11 @@ export default function WorkshopGuide() {
             id="b2_mejorado"
             label="Tu prompt mejorado (usá las 5 partes):"
             rows={6}
-            placeholder="[ROL] Sos un/a...\n[CONTEXTO] Trabajo en...\n[TAREA] Necesito que...\n[FORMATO] Respondé en...\n[RESTRICCIONES] No..."
+            placeholder={`[ROL] Experto en marketing tecnológico
+[CONTEXTO] Trabajo en una startup que busca inversión
+[TAREA] Resumí las tendencias clave del mercado de IA en 2025
+[FORMATO] 5 viñetas, máximo 100 palabras cada una
+[RESTRICCIONES] Evitá tecnicismos, usá tono ejecutivo`}
           />
           <EjercicioIA ejercicioId="b2" />
         </div>
@@ -185,20 +189,33 @@ export default function WorkshopGuide() {
             </thead>
             <tbody>
                <tr><td><a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer" className="hover:text-teal transition-colors">Gemini</a></td><td>Ecosistema Google, ventanas de contexto masivas y visión</td><td><span className="badge badge-freemium">Gratis / Pro</span></td><td>Todos</td></tr>
-               <tr><td><a href="https://chatgpt.com" target="_blank" rel="noopener noreferrer" className="hover:text-teal transition-colors">ChatGPT</a></td><td>Redacción, análisis de datos, código y modo de voz</td><td><span className="badge badge-freemium">Gratis / Plus</span></td><td>Todos</td></tr>
+               <tr><td><a href="https://chat.com" target="_blank" rel="noopener noreferrer" className="hover:text-teal transition-colors">ChatGPT</a></td><td>Redacción, análisis de datos, código y modo de voz</td><td><span className="badge badge-freemium">Gratis / Plus</span></td><td>Todos</td></tr>
                <tr><td><a href="https://claude.ai" target="_blank" rel="noopener noreferrer" className="hover:text-teal transition-colors">Claude</a></td><td>Documentos largos, razonamiento y precisión excepcional</td><td><span className="badge badge-freemium">Gratis / Pro</span></td><td>Todos</td></tr>
                <tr><td><a href="https://www.perplexity.ai" target="_blank" rel="noopener noreferrer" className="hover:text-teal transition-colors">Perplexity</a></td><td>Búsqueda con fuentes verificadas y navegación web activa</td><td><span className="badge badge-freemium">Gratis / Pro</span></td><td>Todos</td></tr>
-               <tr><td><a href="https://chat.deepseek.com/" target="_blank" rel="noopener noreferrer" className="hover:text-teal transition-colors">DeepSeek</a></td><td>Razonamiento lógico potente (R1) y código de alto nivel</td><td><span className="badge badge-free">Gratis / Low Cost</span></td><td>Todos / Devs</td></tr>
+               <tr><td><a href="https://chat.deepseek.com/" target="_blank" rel="noopener noreferrer" className="hover:text-teal transition-colors">DeepSeek</a></td><td>Razonamiento lógico potente (R1) y código de alto nivel</td><td><span className="badge badge-free">Gratis</span></td><td>Todos / Devs</td></tr>
                <tr><td><a href="https://x.ai" target="_blank" rel="noopener noreferrer" className="hover:text-teal transition-colors">Grok</a></td><td>Acceso a datos de X (Twitter) en tiempo real</td><td><span className="badge badge-freemium">Gratis / Premium</span></td><td>Todos</td></tr>
-               <tr><td><a href="https://github.com/features/copilot" target="_blank" rel="noopener noreferrer" className="hover:text-teal transition-colors">GitHub Copilot</a></td><td>Autocompletar código y generar tests unitarios</td><td><span className="badge badge-paid">Pago</span></td><td>Devs</td></tr>
+               <tr><td><a href="https://github.com/features/copilot" target="_blank" rel="noopener noreferrer" className="hover:text-teal transition-colors">GitHub Copilot</a></td><td>Autocompletar código y generar tests unitarios</td><td><span className="badge badge-paid">Pago (Individual / Business)</span></td><td>Devs</td></tr>
             </tbody>
           </table>
+          <p className="text-[11px] text-slate-500 mt-2 px-4 italic">
+            * DeepSeek es gratuito, con opciones de pago para uso por API. Verificar en su web oficial.
+          </p>
         </div>
 
         <div className="ejercicio">
           <div className="ejercicio-tag">✏️ Ejercicio 3 · 15 min</div>
           <h3>¿Qué tarea haría yo con IA esta semana?</h3>
-          <EditableField id="b3_tareas" label="Mis 3 tareas candidatas:" placeholder="1. ...\n2. ...\n3. ..." rows={3} />
+          <p className="text-sm text-slate-500 mb-4">
+            (Ej: redactar la agenda de la semana, resumir artículos del sector, generar ideas para un newsletter, organizar mi bandeja de entrada...)
+          </p>
+          <EditableField
+            id="b3_tareas"
+            label="Mis 3 tareas candidatas:"
+            placeholder={`1. ...
+2. ...
+3. ...`}
+            rows={3}
+          />
           <EditableField id="b3_prompt" label="La que elegí y el prompt que armé:" placeholder="Prompt para la tarea elegida..." rows={4} />
           <EjercicioIA ejercicioId="b3" />
         </div>
@@ -228,7 +245,7 @@ export default function WorkshopGuide() {
             <ul>
               <li>Scripts de automatización simples</li>
               <li>Fórmulas complejas de Excel / Sheets</li>
-              <li>Consultas SQL en lenguaje natural</li>
+              <li>Automatizar la creación de informes en Sheets</li>
             </ul>
           </div>
         </div>

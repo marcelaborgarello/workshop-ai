@@ -48,7 +48,7 @@ export default function TermsModal() {
                 👋 Antes de empezar
               </h2>
               <p className="text-[#7FA8A0] text-sm font-bold uppercase tracking-widest">
-                tres cositas importantes
+                TRES COSITAS IMPORTANTES
               </p>
             </div>
           </div>
@@ -74,46 +74,33 @@ export default function TermsModal() {
               </div>
             </div>
 
-            {/* Hallucinations */}
+            {/* IA Limits */}
             <div className="flex gap-4 p-4 rounded-2xl bg-[#7B5EA7]/5 border border-[#7B5EA7]/20">
               <div className="shrink-0 mt-0.5 text-xl">🤖</div>
               <div>
                 <h4 className="text-[#E8F0EE] font-bold text-sm mb-1">
-                  La IA puede equivocarse
+                  La IA tiene límites (importante saberlo)
                 </h4>
+                <p className="text-slate-400 text-sm leading-relaxed mb-3">
+                  <strong>Puede equivocarse:</strong> Las respuestas las genera Gemini y, aunque suelen ser útiles, pueden contener errores o información incorrecta (lo que se llama &quot;alucinación&quot;). Verificá siempre lo importante.
+                </p>
                 <p className="text-slate-400 text-sm leading-relaxed">
-                  Las respuestas las genera Gemini y, aunque suelen ser útiles, pueden contener
-                  errores o información incorrecta (lo que se llama &quot;alucinación&quot;).
-                  Verificá siempre lo importante en fuentes confiables.
+                  <strong>No piensa ni siente:</strong> Es un modelo de lenguaje: predice texto de forma sofisticada. No tiene conciencia ni emociones propias.
                 </p>
               </div>
             </div>
 
-            {/* Nature & Privacy */}
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div className="flex gap-3 p-4 rounded-2xl bg-[#0F1924]/50 border border-white/5">
-                <div className="text-lg shrink-0">💡</div>
-                <div>
-                  <h5 className="text-[#E8F0EE] font-bold text-xs mb-1">
-                    La IA no piensa ni siente
-                  </h5>
-                  <p className="text-slate-400 text-xs">
-                    Es un modelo de lenguaje: predice texto de forma sofisticada. No tiene
-                    conciencia ni emociones propias.
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-3 p-4 rounded-2xl bg-[#0F1924]/50 border border-white/5">
-                <div className="text-lg shrink-0">🗂️</div>
-                <div>
-                  <h5 className="text-[#E8F0EE] font-bold text-xs mb-1">
-                    Tus datos quedan en tu navegador
-                  </h5>
-                  <p className="text-slate-400 text-xs">
-                    Tu progreso se guarda solo en tu dispositivo. Ginialtech no almacena ni accede
-                    a tu historial.
-                  </p>
-                </div>
+            {/* Privacy */}
+            <div className="flex gap-4 p-4 rounded-2xl bg-[#7B5EA7]/5 border border-[#7B5EA7]/20">
+              <div className="shrink-0 mt-0.5 text-xl">🗂️</div>
+              <div>
+                <h4 className="text-[#E8F0EE] font-bold text-sm mb-1">
+                  Tus datos quedan en tu navegador
+                </h4>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  Tu progreso se guarda solo en tu dispositivo. Ginialtech no almacena ni accede
+                  a tu historial.
+                </p>
               </div>
             </div>
           </div>
