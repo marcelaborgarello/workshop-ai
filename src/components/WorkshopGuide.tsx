@@ -153,10 +153,10 @@ export default function WorkshopGuide() {
           <h3>El desafío del prompt</h3>
           <p>Tomá este prompt pobre y reescribilo con las 5 partes.</p>
           <p style={{ marginTop: "8px", fontStyle: "italic", opacity: 0.7 }}>❌ Prompt original: <strong>{"\""}Haceme un resumen del mercado de IA.{"\""}</strong></p>
-          <p className="text-sm text-slate-400 mb-3">
-            Completá con tu propio prompt usando las 5 partes. Ejemplo (podés copiarlo y editarlo):
+          <p className="text-[11px] font-bold text-slate-500 mt-6 mb-1 uppercase tracking-wider">
+            Ejemplo (podés copiarlo y editarlo):
           </p>
-          <div className="p-4 bg-[#1A2E3D]/40 border border-[#7B5EA7]/20 rounded-xl mb-4 text-[13px] text-slate-300 leading-relaxed font-mono whitespace-pre-wrap shadow-inner">
+          <div className="p-4 bg-[#1A2E3D]/60 border border-[#7B5EA7]/30 rounded-xl mb-6 text-[13px] text-slate-300 leading-relaxed font-mono whitespace-pre-wrap shadow-inner">
 {`[ROL] Experto en marketing tecnológico
 [CONTEXTO] Trabajo en una startup que busca inversión
 [TAREA] Resumí las tendencias clave del mercado de IA en 2025
