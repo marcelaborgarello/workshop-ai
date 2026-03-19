@@ -52,9 +52,11 @@ export default function EjercicioIA({ ejercicioId }: EjercicioIAProps) {
     }
     if (ejercicioId === "b2") return sessionStorage.getItem("wa_b2_mejorado") || "";
     if (ejercicioId === "b3") {
-      const t = sessionStorage.getItem("wa_b3_tareas") || "";
+      const t1 = sessionStorage.getItem("wa_b3_tarea1") || "";
+      const t2 = sessionStorage.getItem("wa_b3_tarea2") || "";
+      const t3 = sessionStorage.getItem("wa_b3_tarea3") || "";
       const p = sessionStorage.getItem("wa_b3_prompt") || "";
-      return `Tareas: ${t}\nPrompt: ${p}`;
+      return `MIS 3 TAREAS CANDIDATAS:\n1. ${t1}\n2. ${t2}\n3. ${t3}\n\nTAREA QUE ELEGÍ Y SU PROMPT:\n${p}`;
     }
     if (ejercicioId === "b4") {
       return sessionStorage.getItem("wa_b4_pregunta") || "";

@@ -153,15 +153,21 @@ export default function WorkshopGuide() {
           <h3>El desafío del prompt</h3>
           <p>Tomá este prompt pobre y reescribilo con las 5 partes.</p>
           <p style={{ marginTop: "8px", fontStyle: "italic", opacity: 0.7 }}>❌ Prompt original: <strong>{"\""}Haceme un resumen del mercado de IA.{"\""}</strong></p>
-          <EditableField
-            id="b2_mejorado"
-            label="Tu prompt mejorado (usá las 5 partes):"
-            rows={6}
-            placeholder={`[ROL] Experto en marketing tecnológico
+          <p className="text-sm text-slate-400 mb-3">
+            Completá con tu propio prompt usando las 5 partes. Ejemplo (podés copiarlo y editarlo):
+          </p>
+          <div className="p-4 bg-[#1A2E3D]/40 border border-[#7B5EA7]/20 rounded-xl mb-4 text-[13px] text-slate-300 leading-relaxed font-mono whitespace-pre-wrap shadow-inner">
+{`[ROL] Experto en marketing tecnológico
 [CONTEXTO] Trabajo en una startup que busca inversión
 [TAREA] Resumí las tendencias clave del mercado de IA en 2025
 [FORMATO] 5 viñetas, máximo 100 palabras cada una
 [RESTRICCIONES] Evitá tecnicismos, usá tono ejecutivo`}
+          </div>
+          <EditableField
+            id="b2_mejorado"
+            label="Tu prompt mejorado (usá las 5 partes):"
+            rows={6}
+            placeholder=""
           />
           <EjercicioIA ejercicioId="b2" />
         </div>
@@ -203,20 +209,32 @@ export default function WorkshopGuide() {
         </div>
 
         <div className="ejercicio">
-          <div className="ejercicio-tag">✏️ Ejercicio 3 · 15 min</div>
           <h3>¿Qué tarea haría yo con IA esta semana?</h3>
-          <p className="text-sm text-slate-500 mb-4">
-            (Ej: redactar la agenda de la semana, resumir artículos del sector, generar ideas para un newsletter, organizar mi bandeja de entrada...)
+          <p className="text-sm text-slate-500 mb-6">
+            (Ej: redactar agenda, resumir artículos, generar ideas para un newsletter, organizar mi bandeja de entrada...)
           </p>
-          <EditableField
-            id="b3_tareas"
-            label="Mis 3 tareas candidatas:"
-            placeholder={`1. ...
-2. ...
-3. ...`}
-            rows={3}
-          />
-          <EditableField id="b3_prompt" label="La que elegí y el prompt que armé:" placeholder="Prompt para la tarea elegida..." rows={4} />
+
+          <div className="mb-6">
+            <h4 className="text-[11px] font-black text-[#7B5EA7] uppercase tracking-[0.2em] mb-4">
+              MIS 3 TAREAS CANDIDATAS:
+            </h4>
+            <div className="space-y-3">
+              <EditableField id="b3_tarea1" placeholder="Tarea 1..." rows={1} />
+              <EditableField id="b3_tarea2" placeholder="Tarea 2..." rows={1} />
+              <EditableField id="b3_tarea3" placeholder="Tarea 3..." rows={1} />
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-[11px] font-black text-[#7B5EA7] uppercase tracking-[0.2em] mb-4">
+              TAREA QUE ELEGÍ Y SU PROMPT:
+            </h4>
+            <EditableField 
+              id="b3_prompt" 
+              placeholder="Escribí acá el prompt para la tarea que elegiste..." 
+              rows={4} 
+            />
+          </div>
           <EjercicioIA ejercicioId="b3" />
         </div>
 
