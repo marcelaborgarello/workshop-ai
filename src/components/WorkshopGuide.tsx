@@ -1,6 +1,6 @@
 import EditableField from "./EditableField";
 import Checklist from "./Checklist";
-import FeedbackForm from "./FeedbackForm";
+import FinalCTA from "./FinalCTA";
 import AdvancedToggle from "./AdvancedToggle";
 import EjercicioIA from "./EjercicioIA";
 import TermsModal from "./TermsModal";
@@ -184,10 +184,13 @@ export default function WorkshopGuide() {
               </tr>
             </thead>
             <tbody>
-              <tr><td>ChatGPT</td><td>Redacción, análisis, código, brainstorming</td><td><span className="badge badge-freemium">Freemium</span></td><td>Todos</td></tr>
-              <tr><td>Claude</td><td>Documentos largos, razonamiento, análisis profundo</td><td><span className="badge badge-freemium">Freemium</span></td><td>Todos</td></tr>
-              <tr><td>Perplexity</td><td>Búsqueda con fuentes verificadas, investigación</td><td><span className="badge badge-freemium">Freemium</span></td><td>Todos</td></tr>
-              <tr><td>GitHub Copilot</td><td>Autocompletar código, generar tests</td><td><span className="badge badge-paid">Pago</span></td><td>Devs</td></tr>
+               <tr><td><a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer" className="hover:text-teal transition-colors">Gemini</a></td><td>Ecosistema Google, ventanas de contexto masivas y visión</td><td><span className="badge badge-freemium">Gratis / Pro</span></td><td>Todos</td></tr>
+               <tr><td><a href="https://chatgpt.com" target="_blank" rel="noopener noreferrer" className="hover:text-teal transition-colors">ChatGPT</a></td><td>Redacción, análisis de datos, código y modo de voz</td><td><span className="badge badge-freemium">Gratis / Plus</span></td><td>Todos</td></tr>
+               <tr><td><a href="https://claude.ai" target="_blank" rel="noopener noreferrer" className="hover:text-teal transition-colors">Claude</a></td><td>Documentos largos, razonamiento y precisión excepcional</td><td><span className="badge badge-freemium">Gratis / Pro</span></td><td>Todos</td></tr>
+               <tr><td><a href="https://www.perplexity.ai" target="_blank" rel="noopener noreferrer" className="hover:text-teal transition-colors">Perplexity</a></td><td>Búsqueda con fuentes verificadas y navegación web activa</td><td><span className="badge badge-freemium">Gratis / Pro</span></td><td>Todos</td></tr>
+               <tr><td><a href="https://chat.deepseek.com/" target="_blank" rel="noopener noreferrer" className="hover:text-teal transition-colors">DeepSeek</a></td><td>Razonamiento lógico potente (R1) y código de alto nivel</td><td><span className="badge badge-free">Gratis / Low Cost</span></td><td>Todos / Devs</td></tr>
+               <tr><td><a href="https://x.ai" target="_blank" rel="noopener noreferrer" className="hover:text-teal transition-colors">Grok</a></td><td>Acceso a datos de X (Twitter) en tiempo real</td><td><span className="badge badge-freemium">Gratis / Premium</span></td><td>Todos</td></tr>
+               <tr><td><a href="https://github.com/features/copilot" target="_blank" rel="noopener noreferrer" className="hover:text-teal transition-colors">GitHub Copilot</a></td><td>Autocompletar código y generar tests unitarios</td><td><span className="badge badge-paid">Pago</span></td><td>Devs</td></tr>
             </tbody>
           </table>
         </div>
@@ -231,10 +234,10 @@ export default function WorkshopGuide() {
         </div>
 
         <div className="ejercicio">
-          <div className="ejercicio-tag">✏️ Notas de la demo</div>
-          <h3>Generación de código en vivo</h3>
-          <EditableField id="b4_prompt" label="Prompt usado:" placeholder="Anotá el prompt..." />
-          <EditableField id="b4_observado" label="Lo que más me llamó la atención:" placeholder="Observaciones..." />
+          <div className="ejercicio-tag">✏️ Ejercicio 4 · 5 min</div>
+          <h3>Sacate las dudas con la IA</h3>
+          <p className="mb-4">Aprovechá a preguntarle a Gemini cualquier duda que te haya quedado sobre cómo usar la IA en tu trabajo o sobre lo que vimos en la demo.</p>
+          <EditableField id="b4_pregunta" label="Mi pregunta o duda:" placeholder="Por ejemplo: ¿Cómo le pido a la IA que no invente datos en un informe?..." rows={3} />
           <EjercicioIA ejercicioId="b4" />
         </div>
 
@@ -293,16 +296,7 @@ export default function WorkshopGuide() {
 
         <hr />
 
-        {/* ── FEEDBACK ────────────────────────────── */}
-        <div className="bloque-header">
-          <div className="bloque-num bg-pink">★</div>
-          <div>
-            <h2>Feedback del workshop</h2>
-            <span className="tiempo">Ayudanos a mejorar</span>
-          </div>
-        </div>
-
-        <FeedbackForm />
+        <FinalCTA />
 
         <hr />
 

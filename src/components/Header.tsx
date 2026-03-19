@@ -20,10 +20,10 @@ export default function Header() {
           <Image 
             src="/logo-con-texto.png" 
             alt="Ginialtech" 
-            width={180} 
-            height={40} 
+            width={160} 
+            height={36} 
             priority
-            className="h-auto w-auto"
+            className="h-6 sm:h-8 w-auto"
           />
         </a>
       </div>

@@ -38,30 +38,36 @@ export default function Checklist({ title, items }: ChecklistProps) {
         )}
       </div>
 
-      <div className="space-y-1">
-        {items.map((item) => {
-          const isDone = checkedIds.has(item.id);
-          return (
-            <label
-              key={item.id}
-              className={`check-item ${isDone ? "done" : ""}`}
-            >
-              <input
-                type="checkbox"
-                checked={isDone}
-                onChange={() => toggleCheck(item.id)}
-              />
-              <span className="check-text">{item.text}</span>
-            </label>
-          );
-        })}
-      </div>
-
-      {isAllDone && (
-        <div className="mt-4 p-3 bg-[#7FB069]/20 border border-[#7FB069]/30 rounded-xl animate-in zoom-in-95 fade-in duration-500">
-          <p className="text-sm font-bold text-[#E8F0EE] flex items-center gap-2">
+      {!isAllDone ? (
+        <div className="space-y-1 animate-in fade-in slide-in-from-top-4 duration-300">
+          {items.map((item) => {
+            const isDone = checkedIds.has(item.id);
+            return (
+              <label
+                key={item.id}
+                className={`check-item ${isDone ? "done select-none cursor-pointer" : "cursor-pointer"}`}
+              >
+                <input
+                  type="checkbox"
+                  checked={isDone}
+                  onChange={() => toggleCheck(item.id)}
+                />
+                <span className="check-text">{item.text}</span>
+              </label>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="p-4 bg-[#7FB069]/10 border border-[#7FB069]/30 rounded-xl animate-in zoom-in-95 fade-in duration-500 flex flex-col items-center text-center gap-2">
+          <p className="text-sm font-bold text-[#E8F0EE]">
             ✨ ¡Felicitaciones! Cumplís con las reglas de uso responsable de IA.
           </p>
+          <button 
+            onClick={() => setCheckedIds(new Set())}
+            className="mt-1 text-[10px] text-[#7FB069] hover:text-[#E8F0EE] uppercase tracking-widest font-bold transition-colors"
+          >
+            Revisar de nuevo
+          </button>
         </div>
       )}
     </div>

@@ -5,7 +5,7 @@ import FeedbackStars from "./FeedbackStars";
 import EditableField from "./EditableField";
 import { Send, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
 
-export default function FeedbackForm() {
+export default function FeedbackForm({ onClose }: { onClose?: () => void }) {
   const [rating, setRating] = useState(0);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
@@ -64,26 +64,22 @@ export default function FeedbackForm() {
         <h3 className="text-xl font-bold mb-2">¡Gracias por tu feedback!</h3>
         <p className="text-muted text-sm px-4">Tu opinión es fundamental para que Ginialtech siga mejorando estos workshops.</p>
         
-        <div className="mt-8 p-4 sm:p-6 bg-[#F5A623]/5 border border-[#F5A623]/20 rounded-2xl animate-in fade-in zoom-in duration-500">
-          <p className="text-sm text-slate-300 leading-relaxed mb-4">
-            ¡Gracias por ayudarme a mejorar! 🚀 Si te gusta lo que estoy armando en <strong>Ginialtech</strong>, podés invitarme un cafecito para que las APIs sigan encendidas.
-          </p>
-          <a 
-            href="https://cafecito.app/ginialtech" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-3 sm:px-6 bg-[#F5A623] hover:bg-[#F5A623]/90 text-[#0F1924] font-black rounded-xl transition-all duration-300 hover:scale-[1.05] shadow-lg"
+        <div className="mt-8 flex flex-col items-center gap-4">
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="w-full sm:w-auto px-6 py-3 bg-[#7FA8A0] hover:bg-[#7FA8A0]/90 text-[#0F1924] font-bold rounded-xl transition-all duration-300 shadow-lg"
+            >
+              Cerrar
+            </button>
+          )}
+          <button 
+            onClick={() => setStatus("idle")}
+            className="text-[11px] font-bold text-[#7FA8A0] hover:text-white uppercase tracking-widest transition-colors mt-2"
           >
-            ☕ Invitar un Cafecito
-          </a>
+            Enviar otro comentario
+          </button>
         </div>
-
-        <button 
-          onClick={() => setStatus("idle")}
-          className="mt-6 text-[11px] font-bold text-[#7FA8A0] hover:text-white uppercase tracking-widest transition-colors"
-        >
-          Enviar otro comentario
-        </button>
       </div>
     );
   }

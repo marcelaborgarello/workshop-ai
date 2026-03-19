@@ -57,9 +57,7 @@ export default function EjercicioIA({ ejercicioId }: EjercicioIAProps) {
       return `Tareas: ${t}\nPrompt: ${p}`;
     }
     if (ejercicioId === "b4") {
-      const p = sessionStorage.getItem("wa_b4_prompt") || "";
-      const o = sessionStorage.getItem("wa_b4_observado") || "";
-      return `Prompt: ${p}\nObservaciones: ${o}`;
+      return sessionStorage.getItem("wa_b4_pregunta") || "";
     }
     if (ejercicioId === "adv") {
       const i = sessionStorage.getItem("wa_mcp_integrations") || "";
@@ -136,7 +134,7 @@ export default function EjercicioIA({ ejercicioId }: EjercicioIAProps) {
     if (ejercicioId === "b1") keys.push("wa_b1_confirmado", "wa_b1_desmitificado");
     else if (ejercicioId === "b2") keys.push("wa_b2_mejorado");
     else if (ejercicioId === "b3") keys.push("wa_b3_tareas", "wa_b3_prompt");
-    else if (ejercicioId === "b4") keys.push("wa_b4_prompt", "wa_b4_observado");
+    else if (ejercicioId === "b4") keys.push("wa_b4_pregunta");
     else if (ejercicioId === "adv") keys.push("wa_mcp_integrations", "wa_mcp_use_case", "wa_adv_stack", "wa_adv_convenciones", "wa_adv_no_hacer");
 
     keys.forEach(k => sessionStorage.removeItem(k));
