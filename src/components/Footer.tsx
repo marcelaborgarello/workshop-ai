@@ -56,7 +56,18 @@ export default function Footer() {
 
         <div className="text-center md:text-right text-[#7FA8A0] text-[11px] leading-relaxed opacity-70">
           <p>Recurso de uso libre con atribución · Marzo 2026</p>
-          <p>© Ginialtech · Advanced Agentic Coding</p>
+          <p>
+            ©{" "}
+            <a
+              href="https://www.ginialtech.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors duration-200 underline underline-offset-4 decoration-[#7FA8A0]/30 hover:decoration-white"
+            >
+              Ginialtech
+            </a>{" "}
+            · Advanced Agentic Coding
+          </p>
         </div>
       </div>
 

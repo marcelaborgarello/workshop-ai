@@ -18,7 +18,7 @@ export default function WorkshopGuide() {
           <p className="brand">✦ Un recurso de <strong>Ginialtech</strong></p>
           <div className="header-meta">
             <div className="meta-pill">⏱ <strong>Medio día</strong></div>
-            <div className="meta-pill">👥 <strong>Grupo mixto</strong> · todos los niveles</div>
+            <div className="meta-pill">🎯 Todos los niveles</div>
             <div className="meta-pill">🔬 Incluye <strong>Bloque Avanzado</strong></div>
           </div>
         </div>
@@ -36,8 +36,9 @@ export default function WorkshopGuide() {
             <a href="#b5"><span className="dot"></span>05 · Ética y uso responsable</a>
             <a href="#b3"><span className="dot"></span>03 · IA en tu trabajo</a>
             <a href="#glosario"><span className="dot"></span>Glosario de términos</a>
-            <a href="#adv" className="adv"><span className="dot"></span>⬡ Bloque Avanzado: MCP, Skills, Agentes</a>
             <a href="#recursos"><span className="dot"></span>Recursos y links</a>
+            <a href="#adv" className="adv"><span className="dot"></span>⬡ Bloque Avanzado: MCP, Skills, Agentes</a>
+
           </div>
         </div>
 
@@ -79,7 +80,7 @@ export default function WorkshopGuide() {
         </div>
 
         <div className="ejercicio">
-          <div className="ejercicio-tag">✏️ Ejercicio 1 · Individual · 5 min</div>
+          <div className="ejercicio-tag">✏️ Ejercicio 1 · 5 min</div>
           <h3>¿Qué sabías y qué era mito?</h3>
           <p>Anotá dos cosas que creías sobre la IA y que este bloque confirmó o desmintió:</p>
           <EditableField id="b1_confirmado" label="Confirmado:" placeholder="Ej: Que la IA en realidad no entiende el lenguaje como nosotros..." />
@@ -94,7 +95,7 @@ export default function WorkshopGuide() {
           <div className="bloque-num bg-amber">02</div>
           <div>
             <h2>Prompt Engineering</h2>
-            <span className="tiempo">⏱ ~45 min · Teoría + práctica grupal</span>
+            <span className="tiempo">⏱ ~45 min · Teoría + práctica</span>
           </div>
         </div>
 
@@ -148,7 +149,7 @@ export default function WorkshopGuide() {
         </div>
 
         <div className="ejercicio">
-          <div className="ejercicio-tag">✏️ Ejercicio 2 · Parejas · 15 min</div>
+          <div className="ejercicio-tag">✏️ Ejercicio 2 · 15 min</div>
           <h3>El desafío del prompt</h3>
           <p>Tomá este prompt pobre y reescribilo con las 5 partes.</p>
           <p style={{ marginTop: "8px", fontStyle: "italic", opacity: 0.7 }}>❌ Prompt original: <strong>{"\""}Haceme un resumen del mercado de IA.{"\""}</strong></p>
@@ -168,7 +169,7 @@ export default function WorkshopGuide() {
           <div className="bloque-num bg-green">03</div>
           <div>
             <h2>IA en tu trabajo diario</h2>
-            <span className="tiempo">⏱ ~45 min · Demo en vivo + ejercicio grupal</span>
+            <span className="tiempo">⏱ ~45 min · Demo en vivo + ejercicio</span>
           </div>
         </div>
 
@@ -192,7 +193,7 @@ export default function WorkshopGuide() {
         </div>
 
         <div className="ejercicio">
-          <div className="ejercicio-tag">✏️ Ejercicio 3 · Grupal · 15 min</div>
+          <div className="ejercicio-tag">✏️ Ejercicio 3 · 15 min</div>
           <h3>¿Qué tarea haría yo con IA esta semana?</h3>
           <EditableField id="b3_tareas" label="Mis 3 tareas candidatas:" placeholder="1. ...\n2. ...\n3. ..." rows={3} />
           <EditableField id="b3_prompt" label="La que elegí y el prompt que armé:" placeholder="Prompt para la tarea elegida..." rows={4} />
@@ -244,7 +245,7 @@ export default function WorkshopGuide() {
           <div className="bloque-num bg-pink">05</div>
           <div>
             <h2>Ética, sesgos y uso responsable</h2>
-            <span className="tiempo">⏱ ~30 min · Debate + reflexión grupal</span>
+            <span className="tiempo">⏱ ~30 min · Debate + reflexión</span>
           </div>
         </div>
 
