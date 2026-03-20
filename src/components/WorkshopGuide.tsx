@@ -4,6 +4,7 @@ import FinalCTA from "./FinalCTA";
 import AdvancedToggle from "./AdvancedToggle";
 import EjercicioIA from "./EjercicioIA";
 import TermsModal from "./TermsModal";
+import BuenasPracticasChip from "./BuenasPracticasChip";
 
 export default function WorkshopGuide() {
   return (
@@ -16,6 +17,9 @@ export default function WorkshopGuide() {
           <h1>Workshop de <span>Inteligencia Artificial</span></h1>
           <p className="sub">Del uso cotidiano al dominio profesional</p>
           <p className="brand">✦ Un recurso de <strong>Ginialtech</strong></p>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: "14px" }}>
+            <BuenasPracticasChip />
+          </div>
           <div className="header-meta">
             <div className="meta-pill">⏱ <strong>Medio día</strong></div>
             <div className="meta-pill">🎯 Todos los niveles</div>

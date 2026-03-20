@@ -7,12 +7,6 @@ export default function TermsModal() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const hasAccepted = localStorage.getItem("wa_terms_accepted");
-    if (!hasAccepted) {
-      setIsOpen(true);
-      document.body.style.overflow = "hidden";
-    }
-
     const handleOpenManual = () => {
       setIsOpen(true);
       document.body.style.overflow = "hidden";
@@ -23,7 +17,6 @@ export default function TermsModal() {
   }, []);
 
   const handleAccept = () => {
-    localStorage.setItem("wa_terms_accepted", "true");
     setIsOpen(false);
     document.body.style.overflow = "auto";
   };
